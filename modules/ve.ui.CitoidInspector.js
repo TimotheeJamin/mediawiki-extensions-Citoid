@@ -375,7 +375,13 @@ ve.ui.CitoidInspector.prototype.onPreviewSelectWidgetChoose = function ( item ) 
 					internalList.getItemNode( this.referenceModel.getListIndex() ).getRange()
 				)
 			);
-			this.referenceModel.updateInternalItem( surfaceModel );
+			// this.referenceModel.updateInternalItem( surfaceModel );
+			itemNodeRange = surfaceModel.getSelection().getRange();
+			doc = surfaceModel.getDocument(),
+			surfaceModel.change( ve.dm.TransactionBuilder.static.newFromRemoval( doc, itemNodeRange, true ) );
+			surfaceModel.change(
+				ve.dm.TransactionBuilder.static.newFromDocumentInsertion( doc, itemNodeRange.start, this.referenceModel.getDocument() )
+			);
 
 			// Apply staging
 			surfaceModel.applyStaging();
